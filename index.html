@@ -1,314 +1,549 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Grupo Chuman | Productos de limpieza profesionales</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif; background: #f4f6f9; color: #2c3e50; scroll-behavior: smooth; }
-        .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
-        
-        /* Colores corporativos Grupo Chuman */
-        :root {
-            --azul-corp: #0d2b4e;
-            --rojo-corp: #b22234;
-            --amarillo-corp: #f4c430;
-            --gris-oscuro: #34495e;
-            --gris-claro: #ecf0f1;
-            --texto: #2c3e50;
-        }
-        
-        /* Header */
-        header { background: var(--azul-corp); padding: 0.75rem 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-        .header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-        .logo img { height: 52px; width: auto; display: block; }
-        
-        /* Navegación */
-        .nav-links { display: flex; gap: 2rem; list-style: none; flex-wrap: wrap; align-items: center; }
-        .nav-links a { color: white; text-decoration: none; font-weight: 500; transition: 0.2s; font-size: 0.9rem; letter-spacing: 0.3px; }
-        .nav-links a:hover { color: var(--amarillo-corp); }
-        
-        /* Dropdown */
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-btn { background: none; border: none; color: white; font-weight: 500; cursor: pointer; padding: 0.5rem 0; font-size: 0.9rem; font-family: inherit; letter-spacing: 0.3px; }
-        .dropdown-btn:hover { color: var(--amarillo-corp); }
-        .dropdown-content { display: none; position: absolute; background: white; min-width: 250px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 1001; border-radius: 6px; margin-top: 0.5rem; border: 1px solid var(--gris-claro); overflow: hidden; }
-        .dropdown-content a { color: var(--azul-corp); padding: 10px 16px; text-decoration: none; display: block; font-size: 0.85rem; border-bottom: 1px solid #edf2f7; transition: 0.2s; }
-        .dropdown-content a:last-child { border-bottom: none; }
-        .dropdown-content a:hover { background: var(--gris-claro); color: var(--rojo-corp); padding-left: 22px; }
-        .dropdown.show .dropdown-content { display: block; }
-        
-        /* Botón WhatsApp */
-        .btn-whatsapp-header { background: #25D366; padding: 0.45rem 1.2rem; border-radius: 4px; color: white; text-decoration: none; font-weight: 600; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
-        .btn-whatsapp-header:hover { background: #128C7E; }
-        
-        /* Hero Section */
-        .hero { background: linear-gradient(135deg, var(--azul-corp) 0%, var(--rojo-corp) 100%); padding: 3rem 0; text-align: center; }
-        .hero h1 { font-size: 2.2rem; color: white; font-weight: 600; letter-spacing: -0.3px; }
-        .hero h1 span { color: var(--amarillo-corp); }
-        .hero p { font-size: 1rem; margin: 1rem 0; color: #e0e0e0; line-height: 1.5; }
-        .btn-primary { background: var(--amarillo-corp); color: var(--azul-corp); padding: 0.7rem 2rem; border-radius: 4px; text-decoration: none; font-weight: 700; display: inline-block; margin-top: 0.5rem; transition: 0.2s; border: none; cursor: pointer; font-size: 0.9rem; }
-        .btn-primary:hover { background: #e0b020; transform: translateY(-2px); }
-        
-        /* Secciones */
-        .section { padding: 3rem 0; border-bottom: 1px solid var(--gris-claro); }
-        .section-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; border-left: 4px solid var(--rojo-corp); padding-left: 1rem; color: var(--azul-corp); display: inline-block; }
-        
-        /* Grid Categorías */
-        .categorias-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-        .categoria-card { background: white; border-radius: 8px; padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--gris-claro); }
-        .categoria-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); border-color: var(--rojo-corp); }
-        .categoria-icono { font-size: 2rem; margin-bottom: 1rem; color: var(--rojo-corp); }
-        .categoria-card h3 { color: var(--azul-corp); margin-bottom: 0.5rem; font-size: 1rem; font-weight: 600; }
-        .categoria-card p { color: #7f8c8d; font-size: 0.8rem; }
-        
-        /* Kits */
-        .kits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 1.5rem; }
-        .kit-card { background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--gris-claro); border-top: 3px solid var(--amarillo-corp); }
-        .kit-card h3 { font-size: 1.2rem; color: var(--azul-corp); margin-bottom: 1rem; font-weight: 600; }
-        .kit-card ul { margin: 1rem 0; padding-left: 1.2rem; }
-        .kit-card li { margin: 0.5rem 0; color: #5a6e7c; font-size: 0.85rem; }
-        .kit-price { font-size: 1.2rem; font-weight: 700; color: var(--rojo-corp); margin: 1rem 0; }
-        .btn-buy { background: #25D366; color: white; border: none; padding: 0.6rem; border-radius: 4px; font-weight: 600; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; transition: 0.2s; font-size: 0.85rem; }
-        .btn-buy:hover { background: #128C7E; }
-        
-        /* Beneficios */
-        .benefits-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; }
-        .benefit { text-align: center; flex: 1; min-width: 180px; background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--gris-claro); transition: 0.2s; }
-        .benefit:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .benefit i { font-size: 1.6rem; background: var(--azul-corp); color: var(--amarillo-corp); padding: 0.8rem; border-radius: 50%; width: 50px; height: 50px; display: inline-flex; align-items: center; justify-content: center; }
-        .benefit h3 { margin-top: 0.8rem; font-size: 0.95rem; color: var(--azul-corp); font-weight: 600; }
-        .benefit p { font-size: 0.75rem; color: #7f8c8d; margin-top: 0.3rem; }
-        
-        /* Contacto */
-        .contact-grid { display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 2rem; }
-        .contact-info, .contact-form { flex: 1; background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--gris-claro); }
-        .contact-info h3, .contact-form h3 { color: var(--azul-corp); margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600; }
-        .contact-info p { margin: 0.7rem 0; display: flex; align-items: center; gap: 0.8rem; font-size: 0.85rem; color: #5a6e7c; }
-        .contact-info i { width: 28px; color: var(--rojo-corp); font-size: 0.9rem; }
-        .contact-info a { color: var(--azul-corp); text-decoration: none; }
-        .contact-info a:hover { color: var(--rojo-corp); }
-        
-        input, textarea { width: 100%; padding: 0.7rem; margin-bottom: 1rem; border: 1px solid var(--gris-claro); border-radius: 4px; font-family: inherit; font-size: 0.85rem; background: white; }
-        input:focus, textarea:focus { outline: none; border-color: var(--rojo-corp); }
-        button[type="submit"] { background: var(--rojo-corp); color: white; width: 100%; padding: 0.7rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
-        button[type="submit"]:hover { background: var(--azul-corp); }
-        
-        footer { background: var(--azul-corp); color: #a0b4c8; text-align: center; padding: 1.5rem; font-size: 0.75rem; }
-        footer a { color: var(--amarillo-corp); text-decoration: none; }
-        
-        .whatsapp-float { position: fixed; bottom: 25px; right: 25px; background: #25D366; color: white; padding: 10px 18px; border-radius: 40px; display: flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; font-size: 0.85rem; z-index: 99; box-shadow: 0 2px 10px rgba(0,0,0,0.2); transition: 0.2s; }
-        .whatsapp-float:hover { transform: scale(1.02); background: #128C7E; }
-        
-        @media (max-width: 768px) { .header-flex { flex-direction: column; } .hero h1 { font-size: 1.6rem; } .container { padding: 0 1rem; } .section { padding: 2rem 0; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Afinador de Charango</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#211823;
+    --surface:#2c2130;
+    --surface-2:#382b3d;
+    --text:#f3e9dc;
+    --muted:#b7a6ac;
+    --gold:#d9a441;
+    --gold-dim:#a97f34;
+    --teal:#4fae8c;
+    --coral:#d1495b;
+    --wood:#a9723f;
+    --line:rgba(243,233,220,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Space Grotesk',sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:32px 16px 60px;
+  }
+  .app{
+    width:100%;
+    max-width:460px;
+  }
+  header{
+    text-align:center;
+    margin-bottom:28px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:32px;
+    margin:0 0 6px;
+    letter-spacing:0.3px;
+  }
+  header p{
+    margin:0;
+    color:var(--muted);
+    font-size:14px;
+  }
+  .charango-line{
+    display:block;
+    margin:18px auto 0;
+    opacity:0.55;
+  }
+
+  .tuning-select{
+    display:flex;
+    gap:8px;
+    margin-bottom:20px;
+  }
+  .tuning-select button{
+    flex:1;
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--muted);
+    font-family:'Space Grotesk',sans-serif;
+    font-size:13px;
+    padding:10px 6px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:border-color .15s, color .15s, background .15s;
+  }
+  .tuning-select button.active{
+    border-color:var(--gold);
+    color:var(--gold);
+    background:var(--surface-2);
+  }
+
+  .custom-panel{
+    display:none;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:20px;
+  }
+  .custom-panel.show{display:block;}
+  .custom-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .custom-row:last-child{margin-bottom:0;}
+  .custom-row span{
+    width:64px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .custom-row select, .custom-row input{
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'Space Grotesk',sans-serif;
+    font-size:14px;
+    padding:6px 8px;
+    border-radius:8px;
+  }
+  .custom-row select{flex:1;}
+  .custom-row input{width:56px;}
+
+  .tuner-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:26px 20px 22px;
+    margin-bottom:22px;
+  }
+
+  .dial-wrap{
+    position:relative;
+    width:220px;
+    height:130px;
+    margin:0 auto 10px;
+  }
+  svg#dial{width:100%;height:100%;display:block;}
+
+  .readout{
+    text-align:center;
+    margin-top:2px;
+  }
+  .note-name{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:48px;
+    line-height:1;
+    color:var(--gold);
+  }
+  .target-label{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:4px;
+  }
+  .freq-hz{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:2px;
+  }
+  .cents-status{
+    font-size:14px;
+    font-weight:500;
+    margin-top:10px;
+  }
+
+  .mic-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    width:100%;
+    background:var(--gold);
+    color:#2b1e12;
+    border:none;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    padding:14px;
+    border-radius:12px;
+    cursor:pointer;
+    margin-bottom:8px;
+  }
+  .mic-btn.listening{
+    background:var(--surface-2);
+    color:var(--text);
+    border:1px solid var(--gold);
+  }
+  .mic-btn:active{transform:scale(0.99);}
+
+  .status-msg{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--muted);
+    min-height:16px;
+  }
+  .status-msg.error{color:var(--coral);}
+
+  .strings{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .string-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:11px 14px;
+    transition:border-color .15s, background .15s;
+  }
+  .string-row.current{
+    border-color:var(--gold);
+    background:var(--surface-2);
+  }
+  .string-row .left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .string-index{
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    background:var(--wood);
+    color:#2b1e12;
+    font-size:11px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .string-note{
+    font-size:15px;
+    font-weight:500;
+  }
+  .string-freq{
+    font-size:12.5px;
+    color:var(--muted);
+  }
+
+  .needle-mark{
+    fill:var(--gold);
+  }
+</style>
 </head>
 <body>
+<div class="app">
+  <header>
+    <h1>Afinador de charango</h1>
+    <p>Elige la afinación y toca una cuerda para detectarla automáticamente</p>
+    <svg class="charango-line" width="140" height="26" viewBox="0 0 140 26" fill="none">
+      <path d="M8 20 C 8 8, 24 4, 32 4 C 40 4, 44 10, 44 15 L 44 20" stroke="var(--gold-dim)" stroke-width="1.5"/>
+      <line x1="44" y1="4" x2="132" y2="4" stroke="var(--gold-dim)" stroke-width="1.5"/>
+      <line x1="52" y1="2" x2="52" y2="6" stroke="var(--gold-dim)" stroke-width="1.5"/>
+      <line x1="60" y1="2" x2="60" y2="6" stroke="var(--gold-dim)" stroke-width="1.5"/>
+    </svg>
+  </header>
 
-    <header>
-        <div class="container header-flex">
-            <div class="logo">
-                <img src="Logochuman.png" alt="Grupo Chuman">
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html">Inicio</a></li>
-                <li class="dropdown" id="dropdownProductos">
-                    <button class="dropdown-btn" id="btnProductos">Productos <i class="fas fa-chevron-down"></i></button>
-                    <div class="dropdown-content">
-                        <a href="ceras.html">Ceras y Abrillantadores</a>
-                        <a href="desengrasantes.html">Desengrasantes y Decapantes</a>
-                        <a href="lavanderia.html">Auxiliares de Lavandería</a>
-                        <a href="desinfectantes.html">Desinfectantes</a>
-                        <a href="perfumadores.html">Perfumadores</a>
-                        <a href="limpiadores.html">Limpiadores</a>
-                        <a href="accesorios.html">Accesorios y Otros</a>
-                    </div>
-                </li>
-                <li><a href="#kits">Ofertas</a></li>
-                <li><a href="#contacto">Contacto</a></li>
-            </ul>
-            <a href="https://wa.me/51948833556?text=Hola%20Grupo%20Chuman%2C%20quiero%20hacer%20un%20pedido" class="btn-whatsapp-header" target="_blank"><i class="fab fa-whatsapp"></i> Pedir ahora</a>
-        </div>
-    </header>
+  <div class="tuning-select" id="tuningSelect">
+    <button data-tuning="standard" class="active">Estándar<br>Sol-Do-Mi-La-Mi</button>
+    <button data-tuning="transposed">Transportada<br>+1 tono</button>
+    <button data-tuning="custom">Personalizada</button>
+  </div>
 
-    <section id="inicio" class="hero">
-        <div class="container">
-            <h1>¡Somos <span>los campeones!</span></h1>
-            <p>Más de 10 años de experiencia | Calidad y precio directo de fábrica</p>
-            <p><strong>Ing. Gary Jason Chumán Becerra</strong> - Planta y oficina en Trujillo</p>
-            <a href="#categorias" class="btn-primary">Ver categorías</a>
-        </div>
-    </section>
+  <div class="custom-panel" id="customPanel"></div>
 
-    <!-- Categorías -->
-    <section id="categorias" class="section">
-        <div class="container">
-            <h2 class="section-title">Nuestras categorías</h2>
-            <div class="categorias-grid">
-                <div class="categoria-card" onclick="location.href='ceras.html'">
-                    <div class="categoria-icono"><i class="fas fa-tint"></i></div>
-                    <h3>Ceras y Abrillantadores</h3>
-                    <p>Cerás, siliconas, renovadores</p>
-                </div>
-                <div class="categoria-card" onclick="location.href='desengrasantes.html'">
-                    <div class="categoria-icono"><i class="fas fa-oil-can"></i></div>
-                    <h3>Desengrasantes y Decapantes</h3>
-                    <p>Desengrasantes, quitasarros</p>
-                </div>
-                <div class="categoria-card" onclick="location.href='lavanderia.html'">
-                    <div class="categoria-icono"><i class="fas fa-tshirt"></i></div>
-                    <h3>Auxiliares de Lavandería</h3>
-                    <p>Shampoos, suavizantes</p>
-                </div>
-                <div class="categoria-card" onclick="location.href='desinfectantes.html'">
-                    <div class="categoria-icono"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Desinfectantes</h3>
-                    <p>Alcohol en gel, lejía, desinfectantes</p>
-                </div>
-                <div class="categoria-card" onclick="location.href='perfumadores.html'">
-                    <div class="categoria-icono"><i class="fas fa-leaf"></i></div>
-                    <h3>Perfumadores</h3>
-                    <p>Perfumadores líquidos y pastillas</p>
-                </div>
-                <div class="categoria-card" onclick="location.href='limpiadores.html'">
-                    <div class="categoria-icono"><i class="fas fa-broom"></i></div>
-                    <h3>Limpiadores</h3>
-                    <p>Jabones, limpiavidrios, shampoos</p>
-                </div>
-                <div class="categoria-card" onclick="location.href='accesorios.html'">
-                    <div class="categoria-icono"><i class="fas fa-tools"></i></div>
-                    <h3>Accesorios y Otros</h3>
-                    <p>Pulverizadores, dispensadores</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <div class="tuner-card">
+    <div class="dial-wrap">
+      <svg id="dial" viewBox="0 0 220 130">
+        <path d="M 20 120 A 90 90 0 0 1 200 120" fill="none" stroke="var(--line)" stroke-width="10" stroke-linecap="round"/>
+        <path id="dialActive" d="M 20 120 A 90 90 0 0 1 200 120" fill="none" stroke="var(--surface-2)" stroke-width="10" stroke-linecap="round" opacity="0"/>
+        <g id="needleGroup" transform="rotate(0 110 120)">
+          <line x1="110" y1="120" x2="110" y2="38" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="110" cy="120" r="6" class="needle-mark"/>
+        </g>
+      </svg>
+    </div>
+    <div class="readout">
+      <div class="note-name" id="noteName">–</div>
+      <div class="target-label" id="targetLabel">Esperando señal…</div>
+      <div class="freq-hz" id="freqHz">&nbsp;</div>
+      <div class="cents-status" id="centsStatus">&nbsp;</div>
+    </div>
+  </div>
 
-    <!-- Kits de oferta -->
-    <section id="kits" class="section">
-        <div class="container">
-            <h2 class="section-title">Kits de oferta especial</h2>
-            <div class="kits-grid">
-                <div class="kit-card">
-                    <h3>Kit N° 1</h3>
-                    <ul>
-                        <li>01 litro de quitasarro enérgico</li>
-                        <li>01 litro de cera al agua perfumada o limpiavidrios</li>
-                        <li>01 litro de desinfectante ecológico</li>
-                        <li>½ litro de desengrasante o gel lavavajillas o perfumador o shampoó</li>
-                        <li>01 pastilla perfumada</li>
-                    </ul>
-                    <div class="kit-price">Precio oferta: S/ 32.00</div>
-                    <a href="https://wa.me/51948833556?text=Quiero%20el%20KIT%20N°1%20de%20Grupo%20Chuman%20(S/.32.00)" target="_blank" class="btn-buy"><i class="fab fa-whatsapp"></i> Comprar Kit 1</a>
-                     <p style="font-size: 0.7rem; margin-top: 0.5rem; color: var(--rojo-corp);">* Incremento S/ 3.00 por cambiar desinfectante ecológico por gel.</p>
-                </div>
-                <div class="kit-card">
-                    <h3>Kit N° 2</h3>
-                    <ul>
-                        <li>01 litro de quitasarro enérgico</li>
-                        <li>01 litro de cera al agua perfumada o limpiavidrios</li>
-                        <li>01 litro de desinfectante ecológico</li>
-                        <li>½ litro de jabón líquido con dispensador o ¼ litro de silicona/renovador o ¼ alcohol en gel</li>
-                        <li>01 pastilla perfumada</li>
-                    </ul>
-                    <div class="kit-price">Precio oferta: S/ 35.00</div>
-                    <a href="https://wa.me/51948833556?text=Quiero%20el%20KIT%20N°2%20de%20Grupo%20Chuman%20(S/.35.00)" target="_blank" class="btn-buy"><i class="fab fa-whatsapp"></i> Comprar Kit 2</a>
-                    <p style="font-size: 0.7rem; margin-top: 0.5rem; color: var(--rojo-corp);">* Incremento S/ 3.00 por cambiar desinfectante ecológico por gel.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <button class="mic-btn" id="micBtn">Activar micrófono</button>
+  <div class="status-msg" id="statusMsg">&nbsp;</div>
 
-    <!-- Beneficios -->
-    <section class="section" style="background: #f8fafc;">
-        <div class="container">
-            <h2 class="section-title">¿Por qué Grupo Chuman?</h2>
-            <div class="benefits-grid">
-                <div class="benefit"><i class="fas fa-truck"></i><h3>Envíos a domicilio</h3><p>Entregas en a todo el valle Chicama</p></div>
-                <div class="benefit"><i class="fas fa-tag"></i><h3>Mejor precio</h3><p>Directo de fábrica</p></div>
-                <div class="benefit"><i class="fas fa-recycle"></i><h3>Productos eco</h3><p>Biodegradables</p></div>
-                <div class="benefit"><i class="fas fa-headset"></i><h3>Atención personalizada</h3><p>WhatsApp 948833556</p></div>
-            </div>
-        </div>
-    </section>
+  <div class="strings" id="strings"></div>
+</div>
 
-    <!-- Contacto -->
-    <section id="contacto" class="section">
-        <div class="container">
-            <h2 class="section-title">Información de contacto</h2>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <h3>Grupo Chuman</h3>
-                    <p><i class="fas fa-user-tie"></i> <strong>Ing. Gary Jason Chumán Becerra</strong></p>
-                    <p><i class="fas fa-map-marker-alt"></i> <strong>Planta:</strong> Calle Sucre 26-A, Los Héroes, Laredo - Trujillo</p>
-                    <p><i class="fas fa-building"></i> <strong>Oficina:</strong> Jr. Borgoño 168, Urb. El Molino, Trujillo</p>
-                    <p><i class="fas fa-phone-alt"></i> <strong>Teléfono:</strong> (044) 773792</p>
-                    <p><i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/51948833556" target="_blank">948 833 556</a></p>
-                    <p><i class="fas fa-envelope"></i> <strong>Email:</strong> grupo.chuman@hotmail.com</p>
-                    <p><i class="fas fa-id-card"></i> <strong>RUC:</strong> 10181821359</p>
-                </div>
-                <div class="contact-form">
-                    <h3>Escríbenos directamente</h3>
-                    <form id="contactForm">
-                        <input type="text" placeholder="Tu nombre" required>
-                        <input type="tel" placeholder="Tu WhatsApp" required>
-                        <textarea rows="3" placeholder="¿Qué productos o cotización necesitas?"></textarea>
-                        <button type="submit">Enviar por WhatsApp <i class="fab fa-whatsapp"></i></button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+<script>
+const NOTE_NAMES = ['Do','Do#','Re','Re#','Mi','Fa','Fa#','Sol','Sol#','La','La#','Si'];
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Grupo Chuman - Ing. Gary Jason Chumán Becerra | Todos los derechos reservados</p>
-            <p>Productos Químicos · Mantenimiento · Logística</p>
-        </div>
-    </footer>
+function freqFromMidi(m){ return 440 * Math.pow(2, (m-69)/12); }
+function midiFromFreq(f){ return 69 + 12*Math.log2(f/440); }
 
-    <a href="https://wa.me/51948833556?text=Hola%20Grupo%20Chuman%2C%20quisiera%20información" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i> <span>¡Escríbenos!</span>
-    </a>
+const STANDARD = [
+  {label:'1ª cuerda', note:'Mi', freq:659.25},
+  {label:'2ª cuerda', note:'La', freq:440.00},
+  {label:'3ª cuerda', note:'Mi (octavada)', freq:659.25},
+  {label:'4ª cuerda', note:'Do', freq:523.25},
+  {label:'5ª cuerda', note:'Sol', freq:392.00}
+];
 
-    <script>
-        // Menú desplegable
-        const dropdown = document.getElementById('dropdownProductos');
-        const btnProductos = document.getElementById('btnProductos');
-        
-        if (dropdown && btnProductos) {
-            btnProductos.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                dropdown.classList.toggle('show');
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (!dropdown.contains(e.target)) {
-                    dropdown.classList.remove('show');
-                }
-            });
-        }
+function transposeSet(set, semitones){
+  return set.map(s => ({...s, freq: s.freq * Math.pow(2, semitones/12)}));
+}
 
-        // Formulario de contacto
-        document.getElementById('contactForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const nombre = this.querySelector('input[placeholder="Tu nombre"]').value;
-            const telefono = this.querySelector('input[placeholder="Tu WhatsApp"]').value;
-            const mensaje = this.querySelector('textarea').value;
-            if (nombre && telefono) {
-                const texto = `Hola%20Grupo%20Chuman%2C%20soy%20${encodeURIComponent(nombre)}.%20Mi%20WhatsApp%20es%20${encodeURIComponent(telefono)}.%20${encodeURIComponent(mensaje)}`;
-                window.open(`https://wa.me/51948833556?text=${texto}`, '_blank');
-            } else {
-                alert('Por favor, complete su nombre y número de WhatsApp.');
-            }
-        });
-        
-        function pedirProducto(nombre) {
-            window.open(`https://wa.me/51948833556?text=Hola%20Grupo%20Chuman%2C%20quiero%20información%20sobre%20${encodeURIComponent(nombre)}`, '_blank');
-        }
-    </script>
+let currentTuning = 'standard';
+let currentStrings = STANDARD.map(s => ({...s}));
+
+const customState = [
+  {noteIdx:4, octave:5},
+  {noteIdx:9, octave:4},
+  {noteIdx:4, octave:5},
+  {noteIdx:0, octave:5},
+  {noteIdx:7, octave:4}
+];
+
+function buildCustomPanel(){
+  const panel = document.getElementById('customPanel');
+  panel.innerHTML = '';
+  STANDARD.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'custom-row';
+    const span = document.createElement('span');
+    span.textContent = s.label;
+    const select = document.createElement('select');
+    NOTE_NAMES.forEach((n, ni) => {
+      const opt = document.createElement('option');
+      opt.value = ni;
+      opt.textContent = n;
+      if(ni === customState[i].noteIdx) opt.selected = true;
+      select.appendChild(opt);
+    });
+    const octInput = document.createElement('input');
+    octInput.type = 'number';
+    octInput.min = 2; octInput.max = 7;
+    octInput.value = customState[i].octave;
+    select.addEventListener('change', () => {
+      customState[i].noteIdx = parseInt(select.value);
+      updateCustomStrings();
+    });
+    octInput.addEventListener('change', () => {
+      customState[i].octave = parseInt(octInput.value) || 4;
+      updateCustomStrings();
+    });
+    row.appendChild(span);
+    row.appendChild(select);
+    row.appendChild(octInput);
+    panel.appendChild(row);
+  });
+}
+
+function updateCustomStrings(){
+  currentStrings = customState.map((c, i) => {
+    const midi = (c.octave+1)*12 + c.noteIdx;
+    return {label: STANDARD[i].label, note: NOTE_NAMES[c.noteIdx], freq: freqFromMidi(midi)};
+  });
+  renderStrings();
+}
+
+function selectTuning(name){
+  currentTuning = name;
+  document.querySelectorAll('#tuningSelect button').forEach(b => {
+    b.classList.toggle('active', b.dataset.tuning === name);
+  });
+  document.getElementById('customPanel').classList.toggle('show', name === 'custom');
+  if(name === 'standard'){
+    currentStrings = STANDARD.map(s => ({...s}));
+  } else if(name === 'transposed'){
+    currentStrings = transposeSet(STANDARD, 2);
+  } else {
+    updateCustomStrings();
+  }
+  renderStrings();
+}
+
+function renderStrings(activeIdx){
+  const wrap = document.getElementById('strings');
+  wrap.innerHTML = '';
+  currentStrings.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'string-row' + (i === activeIdx ? ' current' : '');
+    row.innerHTML = `
+      <div class="left">
+        <div class="string-index">${i+1}</div>
+        <div class="string-note">${s.note}</div>
+      </div>
+      <div class="string-freq">${s.freq.toFixed(2)} Hz</div>
+    `;
+    wrap.appendChild(row);
+  });
+}
+
+document.getElementById('tuningSelect').addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  selectTuning(btn.dataset.tuning);
+});
+
+buildCustomPanel();
+selectTuning('standard');
+
+let audioCtx, analyser, sourceNode, dataArray, rafId;
+let listening = false;
+
+function autoCorrelate(buf, sampleRate){
+  const SIZE = buf.length;
+  let rms = 0;
+  for(let i=0;i<SIZE;i++){ rms += buf[i]*buf[i]; }
+  rms = Math.sqrt(rms/SIZE);
+  if(rms < 0.01) return -1;
+
+  let start = 0, end = SIZE-1;
+  const thresh = 0.2;
+  while(start < SIZE/2 && Math.abs(buf[start]) < thresh) start++;
+  while(end > SIZE/2 && Math.abs(buf[end]) < thresh) end--;
+  const trimmed = buf.slice(start, end);
+  const n = trimmed.length;
+  if(n < 512) return -1;
+
+  const c = new Float32Array(n);
+  for(let lag=0; lag<n; lag++){
+    let sum = 0;
+    for(let i=0; i<n-lag; i++){ sum += trimmed[i]*trimmed[i+lag]; }
+    c[lag] = sum;
+  }
+
+  let d = 0;
+  while(d < n-1 && c[d] > c[d+1]) d++;
+
+  let maxVal = -1, maxPos = -1;
+  for(let i=d; i<n; i++){
+    if(c[i] > maxVal){ maxVal = c[i]; maxPos = i; }
+  }
+  if(maxPos <= 0) return -1;
+
+  let T0 = maxPos;
+  const x1 = c[T0-1] || 0, x2 = c[T0], x3 = c[T0+1] || 0;
+  const a = (x1 + x3 - 2*x2)/2;
+  const b = (x3 - x1)/2;
+  if(a !== 0) T0 = T0 - b/(2*a);
+
+  if(T0 <= 0) return -1;
+  return sampleRate / T0;
+}
+
+function closestTarget(freq){
+  const detectedMidi = midiFromFreq(freq);
+  let best = null, bestDiff = Infinity, bestIdx = -1;
+  currentStrings.forEach((s, i) => {
+    const targetMidi = midiFromFreq(s.freq);
+    let diff = detectedMidi - targetMidi;
+    diff = diff - Math.round(diff/12)*12;
+    if(Math.abs(diff) < Math.abs(bestDiff)){
+      bestDiff = diff;
+      best = s;
+      bestIdx = i;
+    }
+  });
+  return {string: best, idx: bestIdx, cents: bestDiff*100};
+}
+
+function updateDial(cents){
+  const clamped = Math.max(-50, Math.min(50, cents));
+  const angle = (clamped/50) * 80;
+  document.getElementById('needleGroup').setAttribute('transform', `rotate(${angle} 110 120)`);
+}
+
+function pitchLoop(){
+  analyser.getFloatTimeDomainData(dataArray);
+  const freq = autoCorrelate(dataArray, audioCtx.sampleRate);
+
+  if(freq > 60 && freq < 1400){
+    const result = closestTarget(freq);
+    document.getElementById('noteName').textContent = result.string.note;
+    document.getElementById('targetLabel').textContent = `Objetivo: ${result.string.label} · ${result.string.freq.toFixed(2)} Hz`;
+    document.getElementById('freqHz').textContent = `Detectado: ${freq.toFixed(1)} Hz`;
+
+    const centsEl = document.getElementById('centsStatus');
+    const absCents = Math.abs(result.cents);
+    if(absCents < 5){
+      centsEl.textContent = 'Afinado';
+      centsEl.style.color = 'var(--teal)';
+    } else if(result.cents > 0){
+      centsEl.textContent = `Sostenido +${Math.round(result.cents)} cents`;
+      centsEl.style.color = 'var(--coral)';
+    } else {
+      centsEl.textContent = `Bemol ${Math.round(result.cents)} cents`;
+      centsEl.style.color = 'var(--coral)';
+    }
+    updateDial(result.cents);
+    renderStrings(result.idx);
+  } else {
+    document.getElementById('noteName').textContent = '–';
+    document.getElementById('targetLabel').textContent = 'Escuchando…';
+    document.getElementById('freqHz').textContent = '\u00A0';
+    document.getElementById('centsStatus').textContent = '\u00A0';
+    updateDial(0);
+    renderStrings();
+  }
+
+  rafId = requestAnimationFrame(pitchLoop);
+}
+
+async function startListening(){
+  const statusMsg = document.getElementById('statusMsg');
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio:{ echoCancellation:false, noiseSuppression:false, autoGainControl:false }
+    });
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 2048;
+    dataArray = new Float32Array(analyser.fftSize);
+    sourceNode = audioCtx.createMediaStreamSource(stream);
+    sourceNode.connect(analyser);
+    listening = true;
+    document.getElementById('micBtn').textContent = 'Detener';
+    document.getElementById('micBtn').classList.add('listening');
+    statusMsg.textContent = '';
+    statusMsg.classList.remove('error');
+    pitchLoop();
+  } catch(err){
+    statusMsg.textContent = 'No se pudo acceder al micrófono. Revisa los permisos del navegador.';
+    statusMsg.classList.add('error');
+  }
+}
+
+function stopListening(){
+  listening = false;
+  if(rafId) cancelAnimationFrame(rafId);
+  if(sourceNode) sourceNode.disconnect();
+  if(audioCtx) audioCtx.close();
+  document.getElementById('micBtn').textContent = 'Activar micrófono';
+  document.getElementById('micBtn').classList.remove('listening');
+  document.getElementById('noteName').textContent = '–';
+  document.getElementById('targetLabel').textContent = 'Esperando señal…';
+  document.getElementById('freqHz').textContent = '\u00A0';
+  document.getElementById('centsStatus').textContent = '\u00A0';
+  updateDial(0);
+  renderStrings();
+}
+
+document.getElementById('micBtn').addEventListener('click', () => {
+  if(listening) stopListening();
+  else startListening();
+});
+</script>
 </body>
 </html>
