@@ -293,7 +293,7 @@
 
   <div class="calibration">
     <span>La4 =</span>
-    <input type="number" id="a4Input" value="440" min="400" max="480" step="1">
+    <input type="number" id="a4Input" value="440" min="430" max="450" step="1">
     <span>Hz</span>
     <button id="a4Reset" type="button">440 Hz</button>
   </div>
@@ -451,8 +451,8 @@ document.getElementById('tuningSelect').addEventListener('click', (e) => {
 const a4Input = document.getElementById('a4Input');
 a4Input.addEventListener('change', () => {
   let val = parseFloat(a4Input.value);
-  if(isNaN(val) || val < 400) val = 400;
-  if(val > 480) val = 480;
+  if(isNaN(val) || val < 430) val = 430;
+  if(val > 450) val = 450;
   a4Input.value = val;
   a4Ref = val;
   selectTuning(currentTuning);
