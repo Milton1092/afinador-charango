@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Afinador de Charango</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#211823">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Afinador">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
@@ -57,6 +64,38 @@
     margin:18px auto 0;
     opacity:0.55;
   }
+
+  .calibration{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:16px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .calibration input{
+    width:64px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--gold);
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:500;
+    font-size:14px;
+    padding:6px 8px;
+    border-radius:8px;
+    text-align:center;
+  }
+  .calibration button{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--muted);
+    font-size:12px;
+    padding:6px 10px;
+    border-radius:8px;
+    cursor:pointer;
+  }
+  .calibration button:hover{border-color:var(--gold);color:var(--gold);}
 
   .tuning-select{
     display:flex;
@@ -252,6 +291,13 @@
     </svg>
   </header>
 
+  <div class="calibration">
+    <span>La4 =</span>
+    <input type="number" id="a4Input" value="440" min="400" max="480" step="1">
+    <span>Hz</span>
+    <button id="a4Reset" type="button">440 Hz</button>
+  </div>
+
   <div class="tuning-select" id="tuningSelect">
     <button data-tuning="standard" class="active">Estándar<br>Sol-Do-Mi-La-Mi</button>
     <button data-tuning="transposed">Transportada<br>+1 tono</button>
@@ -288,23 +334,29 @@
 <script>
 const NOTE_NAMES = ['Do','Do#','Re','Re#','Mi','Fa','Fa#','Sol','Sol#','La','La#','Si'];
 
-function freqFromMidi(m){ return 440 * Math.pow(2, (m-69)/12); }
-function midiFromFreq(f){ return 69 + 12*Math.log2(f/440); }
+let a4Ref = 440;
 
-const STANDARD = [
-  {label:'1ª cuerda', note:'Mi', freq:659.25},
-  {label:'2ª cuerda', note:'La', freq:440.00},
-  {label:'3ª cuerda', note:'Mi (octavada)', freq:659.25},
-  {label:'4ª cuerda', note:'Do', freq:523.25},
-  {label:'5ª cuerda', note:'Sol', freq:392.00}
+function freqFromMidi(m){ return a4Ref * Math.pow(2, (m-69)/12); }
+function midiFromFreq(f){ return 69 + 12*Math.log2(f/a4Ref); }
+
+const STANDARD_MIDI = [
+  {label:'1ª cuerda', note:'Mi', midi:76},
+  {label:'2ª cuerda', note:'La', midi:69},
+  {label:'3ª cuerda', note:'Mi (octavada)', midi:76},
+  {label:'4ª cuerda', note:'Do', midi:72},
+  {label:'5ª cuerda', note:'Sol', midi:67}
 ];
+
+function buildStandard(){
+  return STANDARD_MIDI.map(s => ({label:s.label, note:s.note, freq:freqFromMidi(s.midi)}));
+}
 
 function transposeSet(set, semitones){
   return set.map(s => ({...s, freq: s.freq * Math.pow(2, semitones/12)}));
 }
 
 let currentTuning = 'standard';
-let currentStrings = STANDARD.map(s => ({...s}));
+let currentStrings = buildStandard();
 
 const customState = [
   {noteIdx:4, octave:5},
@@ -317,7 +369,7 @@ const customState = [
 function buildCustomPanel(){
   const panel = document.getElementById('customPanel');
   panel.innerHTML = '';
-  STANDARD.forEach((s, i) => {
+  STANDARD_MIDI.forEach((s, i) => {
     const row = document.createElement('div');
     row.className = 'custom-row';
     const span = document.createElement('span');
@@ -352,7 +404,7 @@ function buildCustomPanel(){
 function updateCustomStrings(){
   currentStrings = customState.map((c, i) => {
     const midi = (c.octave+1)*12 + c.noteIdx;
-    return {label: STANDARD[i].label, note: NOTE_NAMES[c.noteIdx], freq: freqFromMidi(midi)};
+    return {label: STANDARD_MIDI[i].label, note: NOTE_NAMES[c.noteIdx], freq: freqFromMidi(midi)};
   });
   renderStrings();
 }
@@ -364,9 +416,9 @@ function selectTuning(name){
   });
   document.getElementById('customPanel').classList.toggle('show', name === 'custom');
   if(name === 'standard'){
-    currentStrings = STANDARD.map(s => ({...s}));
+    currentStrings = buildStandard();
   } else if(name === 'transposed'){
-    currentStrings = transposeSet(STANDARD, 2);
+    currentStrings = transposeSet(buildStandard(), 2);
   } else {
     updateCustomStrings();
   }
@@ -394,6 +446,21 @@ document.getElementById('tuningSelect').addEventListener('click', (e) => {
   const btn = e.target.closest('button');
   if(!btn) return;
   selectTuning(btn.dataset.tuning);
+});
+
+const a4Input = document.getElementById('a4Input');
+a4Input.addEventListener('change', () => {
+  let val = parseFloat(a4Input.value);
+  if(isNaN(val) || val < 400) val = 400;
+  if(val > 480) val = 480;
+  a4Input.value = val;
+  a4Ref = val;
+  selectTuning(currentTuning);
+});
+document.getElementById('a4Reset').addEventListener('click', () => {
+  a4Input.value = 440;
+  a4Ref = 440;
+  selectTuning(currentTuning);
 });
 
 buildCustomPanel();
@@ -544,6 +611,12 @@ document.getElementById('micBtn').addEventListener('click', () => {
   if(listening) stopListening();
   else startListening();
 });
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
 </script>
 </body>
 </html>
